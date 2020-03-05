@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Coronavirus Tracker</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+</head>
+<body>
+
+	<div class="container">
+
+
+		<h1>
+			<a href="/">Coronavirus Tracker</a>
+		</h1>
+		<h5>Application to track the reported coronavirus cases</h5>
+
+		<div class="jumbotron">
+			<h1 class="display-4" th:text="${totalReportedCases}"></h1>
+			<p class="lead">Total Coronavirus Cases</p>
+			<hr class="my-4">
+			<p>
+				<span>New coronavirus cases as of yesterday:</span> <span
+					class="font-weight-bold" th:text="${totalNewCases}"></span>
+			</p>
+
+		</div>
+
+		<div class="d-inline" style="padding-right: 10px;">
+			<form class="form-inline d-inline" action="/country_wise_cases">
+				<label class="sr-only" for="country">Select Country</label> <select
+					class="form-control mb-2 mr-sm-2" id="country" name="country">
+
+					<option value="Australia">Australia</option>
+					<option value="Belgium">Belgium</option>
+					<option value="Cambodia">Cambodia</option>
+					<option value="Canada">Canada</option>
+					<option value="Finland">Finland</option>
+					<option value="France">France</option>
+					<option value="Germany">Germany</option>
+					<option value="Hong Kong">Hong Kong</option>
+					<option value="India">India</option>
+					<option value="Italy">Italy</option>
+					<option value="Japan">Japan</option>
+					<option value="Macau">Macau</option>
+					<option value="Mainland China">Mainland China</option>
+					<option value="Malaysia">Malaysia</option>
+					<option value="Nepal">Nepal</option>
+					<option value="Others">Others</option>
+					<option value="Philippines">Philippines</option>
+					<option value="Russia">Russia</option>
+					<option value="Singapore">Singapore</option>
+					<option value="South Korea">South Korea</option>
+					<option value="Spain">Spain</option>
+					<option value="Sri Lanka">Sri Lanka</option>
+					<option value="Sweden">Sweden</option>
+					<option value="Taiwan">Taiwan</option>
+					<option value="Thailand">Thailand</option>
+					<option value="UK">UK</option>
+					<option value="US">US</option>
+					<option value="United Arab Emirates">United Arab Emirates</option>
+					<option value="Vietnam">Vietnam</option>
+
+				</select>
+				<button type="submit" class="btn btn-primary mb-2">Submit</button>
+			</form>
+		</div>
+
+		<div class="d-inline"
+			style="padding-left: 10px; border-left: 1px solid gray;">
+			<a href="/chart" class="btn btn-primary mb-2">Chart</a>
+		</div>
+
+		<div class="d-inline float-right">
+			<form class="form-inline d-inline" action="/home">
+				<label class="sr-only" for="sortby">Sort By</label> <select
+					class="form-control mb-2 mr-sm-2" id="sortby" name="sortby"
+					onchange="this.form.submit()">
+					<option value="sortby">Sort By</option>
+					<option value="state">State</option>
+					<option value="state_desc">State: desc</option>
+					<option value="country">Country</option>
+					<option value="country_desc">Country: desc</option>
+					<option value="totalCase">TotalCase</option>
+					<option value="totalCase_desc">TotalCase: desc</option>
+					<option value="newCase">NewCase</option>
+					<option value="newCase_desc">NewCase: desc</option>
+
+				</select>
+			</form>
+		</div>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>State</th>
+					<th>Country</th>
+					<th>Total Cases</th>
+					<th>New Cases(As of yesterday)</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="rclist : ${reportedCasesList}">
+					<td th:text="${rclist.state}"></td>
+					<td th:text="${rclist.country}"></td>
+					<td th:text="${rclist.totalCases}">0</td>
+					<td th:text="${rclist.newCases}">0</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</body>
+</html>
+

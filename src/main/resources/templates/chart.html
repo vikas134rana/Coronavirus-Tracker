@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" />
+<title>PIE</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+
+</head>
+<body>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+	<div class="container">
+
+		<h1>
+			<a href="/">Coronavirus Tracker</a>
+		</h1>
+		<h5>Application to track the reported coronavirus cases</h5>
+
+		<div id="container1" style="height: 400px"></div>
+
+		<div id="container1" style="height: 40px"></div>
+
+		<div id="container2" style="height: 400px"></div>
+
+		<script th:inline="javascript">
+			var totalCaseId = 'container1';
+			var newCaseId = 'container2';
+
+			var topTotalCasesCountryList = /*[[${topTotalCasesCountryList}]]*/'default';
+			var topNewCasesCountryList = /*[[${topNewCasesCountryList}]]*/'default';
+
+			var totalCaseTitle = 'Most reported cases coronavirus countries';
+			var newCaseTitle = 'Most new reported cases coronavirus countries';
+
+			var totalCaseCountries = [];
+			var newCaseCountries = [];
+
+			var totalCaseData = [];
+			var newCaseData = [];
+
+			for (var i = 0; i < topTotalCasesCountryList.length; i++) {
+				totalCaseCountries.push(topTotalCasesCountryList[i].country);
+				totalCaseData.push(topTotalCasesCountryList[i].totalCases);
+
+			}
+
+			for (var i = 0; i < topNewCasesCountryList.length; i++) {
+				newCaseCountries.push(topNewCasesCountryList[i].country);
+				newCaseData.push(topNewCasesCountryList[i].newCases);
+			}
+
+			var chart = Highcharts.chart(totalCaseId, {
+
+				title : {
+					text : totalCaseTitle
+				},
+
+				subtitle : {
+					text : 'Plain'
+				},
+
+				xAxis : {
+					categories : totalCaseCountries
+				},
+
+				series : [ {
+					type : 'column',
+					colorByPoint : true,
+					data : totalCaseData,
+					showInLegend : false
+				} ]
+
+			});
+
+			var chart = Highcharts.chart(newCaseId, {
+
+				title : {
+					text : newCaseTitle
+				},
+
+				subtitle : {
+					text : 'Plain'
+				},
+
+				xAxis : {
+					categories : newCaseCountries
+				},
+
+				series : [ {
+					type : 'column',
+					colorByPoint : true,
+					data : newCaseData,
+					showInLegend : false
+				} ]
+
+			});
+		</script>
+
+	</div>
+</body>
+</html>

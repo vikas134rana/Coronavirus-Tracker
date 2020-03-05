@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Coronavirus Tracker</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+</head>
+<body>
+
+	<div class="container">
+
+
+		<h1><a href="/">Coronavirus Tracker</a></h1>
+		<h5>Application to track the reported coronavirus cases</h5>
+
+		<div class="jumbotron">
+			<h1 class="display-4" th:text="${totalReportedCountryCases}"></h1>
+			<p class="lead">
+				Total Coronavirus Cases in <span th:text="${country}"></span>
+			</p>
+			<hr class="my-4">
+			<p>
+				<span>New coronavirus cases in <span th:text="${country}"></span> as of yesterday:</span> <span
+					class="font-weight-bold" th:text="${totalNewReportedCountryCases}"></span>
+			</p>
+		</div>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>State</th>
+					<th>Country</th>
+					<th>Total Cases</th>
+					<th>New Cases(As of yesterday)</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="rclist : ${reportedCaseCountryList}">
+					<td th:text="${rclist.state}"></td>
+					<td th:text="${rclist.country}"></td>
+					<td th:text="${rclist.totalCases}">0</td>
+					<td th:text="${rclist.newCases}">0</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</body>
+</html>
+
