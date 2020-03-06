@@ -9,28 +9,39 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.vikas.coronavirustracker.model.ReportedCase;
-import com.vikas.coronavirustracker.service.ReportedCasesService;
+import com.vikas.coronavirustracker.model.CoronavirusCase;
+import com.vikas.coronavirustracker.service.CoronavirusCasesService;
 
 @Controller
 public class CountryWiseCasesController {
 
-	@Autowired 
-	ReportedCasesService reportedCasesService;
-	
+	@Autowired
+	CoronavirusCasesService coronavirusCasesService;
+
 	@RequestMapping("/country_wise_cases")
-	public String country(@RequestParam("country") String country,Model model) {
-		
-		List<ReportedCase> reportedCasesList = reportedCasesService.getReportedCases();
-		List<ReportedCase> reportedCaseCountryList = reportedCasesList.stream().filter(r->r.getCountry().equals(country)).collect(Collectors.toList());
-		int totalReportedCountryCases = reportedCaseCountryList.stream().mapToInt(r->r.getTotalCases()).sum();
-		int totalNewReportedCountryCases = reportedCaseCountryList.stream().mapToInt(r->r.getNewCases()).sum();
-		
+	public String country(@RequestParam("country") String country, Model model) {
+
+		List<CoronavirusCase> coronavirusCaseList = coronavirusCasesService.getCoronavirusCases();
+		List<CoronavirusCase> coronavirusCaseCountryList = coronavirusCaseList.stream().filter(r -> r.getCountry().equals(country)).collect(Collectors.toList());
+
+		int totalReportedCases = coronavirusCaseCountryList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
+		int totalNewReportedCases = coronavirusCaseCountryList.stream().mapToInt(r -> r.getNewReportedCases()).sum();
+
+		int totalRecoveredCases = coronavirusCaseCountryList.stream().mapToInt(r -> r.getTotalRecoveredCases()).sum();
+		int totalNewRecoveredCases = coronavirusCaseCountryList.stream().mapToInt(r -> r.getNewRecoveredCases()).sum();
+
+		int totalDeathCases = coronavirusCaseCountryList.stream().mapToInt(r -> r.getTotalDeathCases()).sum();
+		int totalNewDeathCases = coronavirusCaseCountryList.stream().mapToInt(r -> r.getNewDeathCases()).sum();
+
 		model.addAttribute("country", country);
-		model.addAttribute("reportedCaseCountryList", reportedCaseCountryList);
-		model.addAttribute("totalReportedCountryCases", totalReportedCountryCases);
-		model.addAttribute("totalNewReportedCountryCases", totalNewReportedCountryCases);
-		
+		model.addAttribute("totalReportedCases", totalReportedCases);
+		model.addAttribute("totalNewReportedCases", totalNewReportedCases);
+		model.addAttribute("totalRecoveredCases", totalRecoveredCases);
+		model.addAttribute("totalNewRecoveredCases", totalNewRecoveredCases);
+		model.addAttribute("totalDeathCases", totalDeathCases);
+		model.addAttribute("totalNewDeathCases", totalNewDeathCases);
+		model.addAttribute("coronavirusCaseCountryList", coronavirusCaseCountryList);
+
 		return "country";
 	}
 }

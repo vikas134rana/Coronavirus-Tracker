@@ -1,0 +1,45 @@
+.container1 {
+	display: flex;
+}
+
+.myContainer {
+	width: 75%;
+	margin: auto;
+}
+
+#dataHeader {
+	margin-top: 50px;
+	margin-left: 3%;
+}
+
+#menuButtons {
+	border-top: 1px solid #E9ECEF;
+	border-bottom: 1px solid #E9ECEF;
+	padding: 12px 0px 6px 0px;
+}
+
+#table {
+	margin-top: 50px;
+}
+
+#menuButtons>div {
+	padding-right: 40px;
+}
+
+.bg-reported {
+	background-color: #7ddddd;
+	color: black;
+	/* font-weight: bold; */
+}
+
+.bg-recovered {
+	background-color: #5ada6a;
+	color: black;
+	/* font-weight: bold; */
+}
+
+.bg-death {
+	background-color: #ff6d66;
+	color: black;
+	/* font-weight: bold; */
+}

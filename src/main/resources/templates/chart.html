@@ -5,11 +5,9 @@
 <title>PIE</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
 
 </head>
 <body>
@@ -22,11 +20,11 @@
 		<h1>
 			<a href="/">Coronavirus Tracker</a>
 		</h1>
-		<h5>Application to track the reported coronavirus cases</h5>
+		<h5>Application to track the coronavirus cases</h5>
 
 		<div id="container1" style="height: 400px"></div>
 
-		<div id="container1" style="height: 40px"></div>
+		<div style="height: 40px"></div>
 
 		<div id="container2" style="height: 400px"></div>
 
@@ -34,74 +32,42 @@
 			var totalCaseId = 'container1';
 			var newCaseId = 'container2';
 
-			var topTotalCasesCountryList = /*[[${topTotalCasesCountryList}]]*/'default';
-			var topNewCasesCountryList = /*[[${topNewCasesCountryList}]]*/'default';
+			var chart_case = /*[[${chart_case}]]*/'default';
+			var topTotalCasesCountries = /*[[${topTotalCasesCountries}]]*/'default';
+			var topTotalCasesData = /*[[${topTotalCasesData}]]*/'default';
+			var topNewCasesCountries = /*[[${topNewCasesCountries}]]*/'default';
+			var topNewCasesData = /*[[${topNewCasesData}]]*/'default';
+			
+			var totalCaseTitle = 'Total ' + chart_case + ' Cases coronavirus countries';
+			var newCaseTitle = 'New ' + chart_case + ' Cases coronavirus countries';
 
-			var totalCaseTitle = 'Most reported cases coronavirus countries';
-			var newCaseTitle = 'Most new reported cases coronavirus countries';
+			chart(totalCaseId,totalCaseTitle,topTotalCasesCountries,topTotalCasesData);
+			chart(newCaseId,newCaseTitle,topNewCasesCountries,topNewCasesData);
+			
+			function chart(id, title, categories, data) {
+				var chart = Highcharts.chart(id, {
 
-			var totalCaseCountries = [];
-			var newCaseCountries = [];
+					title : {
+						text : title
+					},
 
-			var totalCaseData = [];
-			var newCaseData = [];
+					subtitle : {
+						text : 'Plain'
+					},
 
-			for (var i = 0; i < topTotalCasesCountryList.length; i++) {
-				totalCaseCountries.push(topTotalCasesCountryList[i].country);
-				totalCaseData.push(topTotalCasesCountryList[i].totalCases);
+					xAxis : {
+						categories : categories
+					},
 
+					series : [ {
+						type : 'column',
+						colorByPoint : true,
+						data : data,
+						showInLegend : false
+					} ]
+
+				});
 			}
-
-			for (var i = 0; i < topNewCasesCountryList.length; i++) {
-				newCaseCountries.push(topNewCasesCountryList[i].country);
-				newCaseData.push(topNewCasesCountryList[i].newCases);
-			}
-
-			var chart = Highcharts.chart(totalCaseId, {
-
-				title : {
-					text : totalCaseTitle
-				},
-
-				subtitle : {
-					text : 'Plain'
-				},
-
-				xAxis : {
-					categories : totalCaseCountries
-				},
-
-				series : [ {
-					type : 'column',
-					colorByPoint : true,
-					data : totalCaseData,
-					showInLegend : false
-				} ]
-
-			});
-
-			var chart = Highcharts.chart(newCaseId, {
-
-				title : {
-					text : newCaseTitle
-				},
-
-				subtitle : {
-					text : 'Plain'
-				},
-
-				xAxis : {
-					categories : newCaseCountries
-				},
-
-				series : [ {
-					type : 'column',
-					colorByPoint : true,
-					data : newCaseData,
-					showInLegend : false
-				} ]
-
-			});
 		</script>
 
 	</div>

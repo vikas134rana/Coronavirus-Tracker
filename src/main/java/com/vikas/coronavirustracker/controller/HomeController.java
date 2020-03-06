@@ -1,5 +1,6 @@
 package com.vikas.coronavirustracker.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,25 +10,35 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.vikas.coronavirustracker.model.ReportedCase;
-import com.vikas.coronavirustracker.service.ReportedCasesService;
+import com.vikas.coronavirustracker.model.CoronavirusCase;
+import com.vikas.coronavirustracker.service.CoronavirusCasesService;
 
 @Controller
 public class HomeController {
 
 	@Autowired
-	ReportedCasesService reportedCasesService;
+	CoronavirusCasesService coronavirusCasesService;
 
 	@RequestMapping("/")
 	public String home(Model model) {
 
-		List<ReportedCase> reportedCasesList = reportedCasesService.getReportedCases();
-		int totalReportedCases = reportedCasesList.stream().mapToInt(r -> r.getTotalCases()).sum();
-		int totalNewCases = reportedCasesList.stream().mapToInt(r -> r.getNewCases()).sum();
+		List<CoronavirusCase> coronavirusCasesList = coronavirusCasesService.getCoronavirusCases();
+		int totalReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
+		int totalNewReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewReportedCases()).sum();
+
+		int totalRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalRecoveredCases()).sum();
+		int totalNewRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewRecoveredCases()).sum();
+
+		int totalDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalDeathCases()).sum();
+		int totalNewDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewDeathCases()).sum();
 
 		model.addAttribute("totalReportedCases", totalReportedCases);
-		model.addAttribute("totalNewCases", totalNewCases);
-		model.addAttribute("reportedCasesList", reportedCasesList);
+		model.addAttribute("totalNewReportedCases", totalNewReportedCases);
+		model.addAttribute("totalRecoveredCases", totalRecoveredCases);
+		model.addAttribute("totalNewRecoveredCases", totalNewRecoveredCases);
+		model.addAttribute("totalDeathCases", totalDeathCases);
+		model.addAttribute("totalNewDeathCases", totalNewDeathCases);
+		model.addAttribute("coronavirusCasesList", coronavirusCasesList);
 
 		return "home";
 	}
@@ -35,43 +46,53 @@ public class HomeController {
 	@RequestMapping("/home")
 	public String homeWithSort(Model model, @RequestParam("sortby") String sortby) {
 
-		List<ReportedCase> tempReportedCasesList = reportedCasesService.getReportedCases();
-		List<ReportedCase> reportedCasesList;
+		List<CoronavirusCase> tempCoronavirusCasesList = coronavirusCasesService.getCoronavirusCases();
+		List<CoronavirusCase> coronavirusCasesList;
 
-		if (sortby.contains("state")) {
-			if (sortby.contains("desc")) {
-				reportedCasesList = tempReportedCasesList.stream().sorted((r1, r2) -> r2.getState().compareTo(r1.getState())).collect(Collectors.toList());
-			} else {
-				reportedCasesList = tempReportedCasesList.stream().sorted((r1, r2) -> r1.getState().compareTo(r2.getState())).collect(Collectors.toList());
+		Comparator<CoronavirusCase> comparator = (r1, r2) -> {
+
+			if (sortby.contains("state")) {
+				return r1.getState().compareTo(r2.getState());
+			} else if (sortby.contains("country")) {
+				return r1.getCountry().compareTo(r2.getCountry());
+			} else if (sortby.contains("totalReportedCase")) {
+				return r1.getTotalReportedCases() - r2.getTotalReportedCases();
+			} else if (sortby.contains("newReportedCase")) {
+				return r1.getNewReportedCases() - r2.getNewReportedCases();
+			} else if (sortby.contains("totalRecoveredCase")) {
+				return r1.getTotalRecoveredCases() - r2.getTotalRecoveredCases();
+			} else if (sortby.contains("newRecoveredCase")) {
+				return r1.getNewRecoveredCases() - r2.getNewRecoveredCases();
+			} else if (sortby.contains("totalDeathCase")) {
+				return r1.getTotalDeathCases() - r2.getTotalDeathCases();
+			} else if (sortby.contains("newDeathCase")) {
+				return r1.getNewDeathCases() - r2.getNewDeathCases();
 			}
-		} else if (sortby.contains("country")) {
-			if (sortby.contains("desc")) {
-				reportedCasesList = tempReportedCasesList.stream().sorted((r1, r2) -> r2.getCountry().compareTo(r1.getCountry())).collect(Collectors.toList());
-			} else {
-				reportedCasesList = tempReportedCasesList.stream().sorted((r1, r2) -> r1.getCountry().compareTo(r2.getCountry())).collect(Collectors.toList());
-			}
-		} else if (sortby.contains("totalCase")) {
-			if (sortby.contains("desc")) {
-				reportedCasesList = tempReportedCasesList.stream().sorted((r1, r2) -> r2.getTotalCases() - r1.getTotalCases()).collect(Collectors.toList());
-			} else {
-				reportedCasesList = tempReportedCasesList.stream().sorted((r1, r2) -> r1.getTotalCases() - r2.getTotalCases()).collect(Collectors.toList());
-			}
-		} else if (sortby.contains("newCase")) {
-			if (sortby.contains("desc")) {
-				reportedCasesList = tempReportedCasesList.stream().sorted((r1, r2) -> r2.getNewCases() - r1.getNewCases()).collect(Collectors.toList());
-			} else {
-				reportedCasesList = tempReportedCasesList.stream().sorted((r1, r2) -> r1.getNewCases() - r2.getNewCases()).collect(Collectors.toList());
-			}
+			return 0;
+		};
+
+		if (sortby.contains("desc")) {
+			coronavirusCasesList = tempCoronavirusCasesList.stream().sorted(comparator.reversed()).collect(Collectors.toList());
 		} else {
-			reportedCasesList = tempReportedCasesList;
+			coronavirusCasesList = tempCoronavirusCasesList.stream().sorted(comparator).collect(Collectors.toList());
 		}
 
-		int totalReportedCases = reportedCasesList.stream().mapToInt(r -> r.getTotalCases()).sum();
-		int totalNewCases = reportedCasesList.stream().mapToInt(r -> r.getNewCases()).sum();
+		int totalReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
+		int totalNewReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
+
+		int totalRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalRecoveredCases()).sum();
+		int totalNewRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalRecoveredCases()).sum();
+
+		int totalDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalDeathCases()).sum();
+		int totalNewDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalDeathCases()).sum();
 
 		model.addAttribute("totalReportedCases", totalReportedCases);
-		model.addAttribute("totalNewCases", totalNewCases);
-		model.addAttribute("reportedCasesList", reportedCasesList);
+		model.addAttribute("totalNewReportedCases", totalNewReportedCases);
+		model.addAttribute("totalRecoveredCases", totalRecoveredCases);
+		model.addAttribute("totalNewRecoveredCases", totalNewRecoveredCases);
+		model.addAttribute("totalDeathCases", totalDeathCases);
+		model.addAttribute("totalNewDeathCases", totalNewDeathCases);
+		model.addAttribute("coronavirusCasesList", coronavirusCasesList);
 
 		return "home";
 	}
