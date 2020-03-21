@@ -63,37 +63,8 @@
 				<form class="form-inline d-inline" action="/country_wise_cases">
 					<label class="sr-only" for="country">Select Country</label> <select
 						class="form-control mb-2 mr-sm-2" id="country" name="country">
-
-						<option value="Australia">Australia</option>
-						<option value="Belgium">Belgium</option>
-						<option value="Cambodia">Cambodia</option>
-						<option value="Canada">Canada</option>
-						<option value="Finland">Finland</option>
-						<option value="France">France</option>
-						<option value="Germany">Germany</option>
-						<option value="Hong Kong">Hong Kong</option>
-						<option value="India">India</option>
-						<option value="Italy">Italy</option>
-						<option value="Japan">Japan</option>
-						<option value="Macau">Macau</option>
-						<option value="Mainland China">Mainland China</option>
-						<option value="Malaysia">Malaysia</option>
-						<option value="Nepal">Nepal</option>
-						<option value="Others">Others</option>
-						<option value="Philippines">Philippines</option>
-						<option value="Russia">Russia</option>
-						<option value="Singapore">Singapore</option>
-						<option value="South Korea">South Korea</option>
-						<option value="Spain">Spain</option>
-						<option value="Sri Lanka">Sri Lanka</option>
-						<option value="Sweden">Sweden</option>
-						<option value="Taiwan">Taiwan</option>
-						<option value="Thailand">Thailand</option>
-						<option value="UK">UK</option>
-						<option value="US">US</option>
-						<option value="United Arab Emirates">United Arab Emirates</option>
-						<option value="Vietnam">Vietnam</option>
-
+						<option th:each="country : ${countryList}"
+							th:value="${country}" th:utext="${country}" />
 					</select>
 					<button type="submit" class="btn btn-primary mb-2">Country
 						Data</button>
@@ -122,25 +93,25 @@
 						onchange="this.form.submit()">
 						<option value="sortby">Sort By</option>
 						<option value="state">State</option>
-						<option value="state_desc">State: desc</option>
+						<option value="state_desc">State DESC</option>
 						<option value="country">Country</option>
-						<option value="country_desc">Country: desc</option>
-						<option value="totalReportedCase">TotalReportedCase</option>
-						<option value="totalReportedCase_desc">TotalReportedCase:
-							desc</option>
-						<option value="newReportedCase">NewReportedCase</option>
-						<option value="newReportedCase_desc">NewReportedCase:
-							desc</option>
-						<option value="totalRecoveredCase">TotalRecoveredCase</option>
-						<option value="totalRecoveredCase_desc">TotalRecoveredCase:
-							desc</option>
-						<option value="newRecoveredCase">NewRecoveredCase</option>
-						<option value="newRecoveredCase_desc">NewRecoveredCase:
-							desc</option>
-						<option value="totalDeathCase">TotalDeathCase</option>
-						<option value="totalDeathCase_desc">TotalDeathCase: desc</option>
-						<option value="newDeathCase">NewDeathCase</option>
-						<option value="newDeathCase_desc">NewDeathCase: desc</option>
+						<option value="country_desc">Country DESC</option>
+						<option value="totalReportedCase">Total Reported Case</option>
+						<option value="totalReportedCase_desc">Total Reported
+							Case DESC</option>
+						<option value="newReportedCase">New Reported Case</option>
+						<option value="newReportedCase_desc">New Reported Case
+							DESC</option>
+						<option value="totalRecoveredCase">Total Recovered Case</option>
+						<option value="totalRecoveredCase_desc">Total Recovered
+							Case DESC</option>
+						<option value="newRecoveredCase">New Recovered Case</option>
+						<option value="newRecoveredCase_desc">New Recovered Case
+							DESC</option>
+						<option value="totalDeathCase">Total Death Case</option>
+						<option value="totalDeathCase_desc">Total Death Case DESC</option>
+						<option value="newDeathCase">New Death Case</option>
+						<option value="newDeathCase_desc">New Death Case DESC</option>
 
 
 					</select>
@@ -169,10 +140,8 @@
 					<td th:text="${list.country}"></td>
 					<td th:text="${list.totalReportedCases}" class="bg-reported">0</td>
 					<td th:text="${list.newReportedCases}" class="bg-reported">0</td>
-					<td th:text="${list.totalRecoveredCases}"
-						class="bg-recovered">0</td>
-					<td th:text="${list.newRecoveredCases}"
-						class="bg-recovered">0</td>
+					<td th:text="${list.totalRecoveredCases}" class="bg-recovered">0</td>
+					<td th:text="${list.newRecoveredCases}" class="bg-recovered">0</td>
 					<td th:text="${list.totalDeathCases}" class="bg-death">0</td>
 					<td th:text="${list.newDeathCases}" class="bg-death">0</td>
 				</tr>

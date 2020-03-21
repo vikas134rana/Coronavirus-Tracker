@@ -28,10 +28,10 @@ public class CoronavirusCasesService {
 	private static final String RECOVERED_CASES_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv";
 	private static final String DEATHS_CASES_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv";
 
-	private List<CoronavirusCase> reportedCases = new ArrayList<CoronavirusCase>();
+	private List<CoronavirusCase> coronavirusCaseList = new ArrayList<CoronavirusCase>();
 
 	public List<CoronavirusCase> getCoronavirusCases() {
-		return reportedCases;
+		return coronavirusCaseList;
 	}
 
 	@PostConstruct
@@ -51,22 +51,28 @@ public class CoronavirusCasesService {
 			String state = reportedRecord.get("Province/State");
 			String country = reportedRecord.get("Country/Region");
 
-			int totalReportedCases = Integer.parseInt(reportedRecord.get(reportedRecord.size() - 1));
-			int previousReportedCases = Integer.parseInt(reportedRecord.get(reportedRecord.size() - 2));
+			String totalReportedCases_s = reportedRecord.get(reportedRecord.size() - 1);
+			int totalReportedCases = totalReportedCases_s.isEmpty() ? 0 : Integer.parseInt(totalReportedCases_s);
+			String previousReportedCases_s = reportedRecord.get(reportedRecord.size() - 2);
+			int previousReportedCases = previousReportedCases_s.isEmpty() ? 0 : Integer.parseInt(previousReportedCases_s);
 			int newReportedCases = totalReportedCases - previousReportedCases;
 
-			int totalRecoveredCases = Integer.parseInt(recoveredRecord.get(reportedRecord.size() - 1));
-			int previousRecoveredCases = Integer.parseInt(recoveredRecord.get(reportedRecord.size() - 2));
+			String totalRecoveredCases_s = recoveredRecord.get(reportedRecord.size() - 1);
+			int totalRecoveredCases = totalRecoveredCases_s.isEmpty() ? 0 : Integer.parseInt(totalRecoveredCases_s);
+			String previousRecoveredCases_s = recoveredRecord.get(reportedRecord.size() - 2);
+			int previousRecoveredCases = previousRecoveredCases_s.isEmpty() ? 0 : Integer.parseInt(previousRecoveredCases_s);
 			int newRecoveredCases = totalRecoveredCases - previousRecoveredCases;
 
-			int totalDeathCases = Integer.parseInt(deathsRecord.get(reportedRecord.size() - 1));
-			int previousDeathCases = Integer.parseInt(deathsRecord.get(reportedRecord.size() - 2));
+			String totalDeathCases_s = deathsRecord.get(reportedRecord.size() - 1);
+			int totalDeathCases = totalDeathCases_s.isEmpty() ? 0 : Integer.parseInt(totalDeathCases_s);
+			String previousDeathCases_s = deathsRecord.get(reportedRecord.size() - 2);
+			int previousDeathCases = previousDeathCases_s.isEmpty() ? 0 : Integer.parseInt(deathsRecord.get(reportedRecord.size() - 2));
 			int newDeathCases = totalDeathCases - previousDeathCases;
 
-			CoronavirusCase reportedCaseRecord = new CoronavirusCase(state, country, totalReportedCases, newReportedCases, totalRecoveredCases,
+			CoronavirusCase coronavirusCase = new CoronavirusCase(state, country, totalReportedCases, newReportedCases, totalRecoveredCases,
 					newRecoveredCases, totalDeathCases, newDeathCases);
-			reportedCases.add(reportedCaseRecord);
-			System.out.println(reportedCaseRecord);
+			coronavirusCaseList.add(coronavirusCase);
+			System.out.println(coronavirusCase);
 		}
 
 	}
@@ -90,6 +96,7 @@ public class CoronavirusCasesService {
 			System.out.println("Malformed URL: " + e.getMessage());
 		} catch (IOException e) {
 			System.out.println("I/O Error: " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		StringReader dataReader = new StringReader(fileData);
