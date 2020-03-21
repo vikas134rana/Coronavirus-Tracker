@@ -20,6 +20,7 @@
 
 #table {
 	margin-top: 50px;
+	border-spacing: 5px;
 }
 
 #menuButtons>div {
@@ -27,19 +28,19 @@
 }
 
 .bg-reported {
-	background-color: #7ddddd;
-	color: black;
-	/* font-weight: bold; */
+	/* background-color: #bfeeee; */
+	color: #6672d9;
+	font-weight: bold;
 }
 
 .bg-recovered {
-	background-color: #5ada6a;
-	color: black;
-	/* font-weight: bold; */
+	/* background-color: #afedb7; */
+	color: #39ae63;
+	font-weight: bold;
 }
 
 .bg-death {
-	background-color: #ff6d66;
-	color: black;
-	/* font-weight: bold; */
+	/* background-color: #ffa39d; */
+	color: #ff0d00;
+	font-weight: bold;
 }

@@ -20,43 +20,15 @@ public class HomeController {
 	CoronavirusCasesService coronavirusCasesService;
 
 	@RequestMapping("/")
-	public String home(Model model) {
+	public String homeWithSort(Model model, @RequestParam(name = "sortby", required = false) String sortby) {
 
 		List<CoronavirusCase> coronavirusCasesList = coronavirusCasesService.getCoronavirusCases();
-
 		List<String> countryList = coronavirusCasesList.stream().map(r -> r.getCountry()).sorted().distinct().collect(Collectors.toList());
 
-		int totalReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
-		int totalNewReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewReportedCases()).sum();
-
-		int totalRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalRecoveredCases()).sum();
-		int totalNewRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewRecoveredCases()).sum();
-
-		int totalDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalDeathCases()).sum();
-		int totalNewDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewDeathCases()).sum();
-
-		model.addAttribute("totalReportedCases", totalReportedCases);
-		model.addAttribute("totalNewReportedCases", totalNewReportedCases);
-		model.addAttribute("totalRecoveredCases", totalRecoveredCases);
-		model.addAttribute("totalNewRecoveredCases", totalNewRecoveredCases);
-		model.addAttribute("totalDeathCases", totalDeathCases);
-		model.addAttribute("totalNewDeathCases", totalNewDeathCases);
-		model.addAttribute("coronavirusCasesList", coronavirusCasesList);
-
-		model.addAttribute("countryList", countryList);
-
-		return "home";
-	}
-
-	@RequestMapping("/home")
-	public String homeWithSort(Model model, @RequestParam("sortby") String sortby) {
-
-		List<CoronavirusCase> tempCoronavirusCasesList = coronavirusCasesService.getCoronavirusCases();
-		List<CoronavirusCase> coronavirusCasesList;
-
-		Comparator<CoronavirusCase> comparator = getComparator(sortby);
-
-		coronavirusCasesList = tempCoronavirusCasesList.stream().sorted(comparator).collect(Collectors.toList());
+		if (sortby != null) {
+			Comparator<CoronavirusCase> comparator = getComparator(sortby);
+			coronavirusCasesList = coronavirusCasesList.stream().sorted(comparator).collect(Collectors.toList());
+		}
 
 		int totalReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
 		int totalNewReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
@@ -74,6 +46,7 @@ public class HomeController {
 		model.addAttribute("totalDeathCases", totalDeathCases);
 		model.addAttribute("totalNewDeathCases", totalNewDeathCases);
 		model.addAttribute("coronavirusCasesList", coronavirusCasesList);
+		model.addAttribute("countryList", countryList);
 
 		return "home";
 	}
