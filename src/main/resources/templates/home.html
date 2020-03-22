@@ -87,7 +87,7 @@
 			</div>
 
 			<div class="d-inline float-right">
-				<form class="form-inline d-inline" action="/home">
+				<form class="form-inline d-inline" action="/">
 					<label class="sr-only" for="sortby">Sort By</label> <select
 						class="form-control mb-2 mr-sm-2" id="sortby" name="sortby"
 						onchange="this.form.submit()">
@@ -138,11 +138,11 @@
 					<td th:text="${listStat.index+1}"></td>
 					<td th:text="${list.state}"></td>
 					<td th:text="${list.country}"></td>
-					<td th:text="${list.totalReportedCases}" class="bg-reported">0</td>
+					<td th:text="${list.totalReportedCases}" class="bg-reported font-weight-bold" >0</td>
 					<td th:text="${list.newReportedCases}" class="bg-reported">0</td>
-					<td th:text="${list.totalRecoveredCases}" class="bg-recovered">0</td>
+					<td th:text="${list.totalRecoveredCases}" class="bg-recovered font-weight-bold">0</td>
 					<td th:text="${list.newRecoveredCases}" class="bg-recovered">0</td>
-					<td th:text="${list.totalDeathCases}" class="bg-death">0</td>
+					<td th:text="${list.totalDeathCases}" class="bg-death font-weight-bold">0</td>
 					<td th:text="${list.newDeathCases}" class="bg-death">0</td>
 				</tr>
 			</tbody>

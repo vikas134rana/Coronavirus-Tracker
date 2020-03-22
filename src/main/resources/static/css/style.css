@@ -30,17 +30,14 @@
 .bg-reported {
 	/* background-color: #bfeeee; */
 	color: #6672d9;
-	font-weight: bold;
 }
 
 .bg-recovered {
 	/* background-color: #afedb7; */
 	color: #39ae63;
-	font-weight: bold;
 }
 
 .bg-death {
 	/* background-color: #ffa39d; */
 	color: #ff0d00;
-	font-weight: bold;
 }
