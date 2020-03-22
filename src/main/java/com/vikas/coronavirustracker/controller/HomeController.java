@@ -31,13 +31,13 @@ public class HomeController {
 		}
 
 		int totalReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
-		int totalNewReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalReportedCases()).sum();
+		int totalNewReportedCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewReportedCases()).sum();
 
 		int totalRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalRecoveredCases()).sum();
-		int totalNewRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalRecoveredCases()).sum();
+		int totalNewRecoveredCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewRecoveredCases()).sum();
 
 		int totalDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalDeathCases()).sum();
-		int totalNewDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getTotalDeathCases()).sum();
+		int totalNewDeathCases = coronavirusCasesList.stream().mapToInt(r -> r.getNewDeathCases()).sum();
 
 		model.addAttribute("totalReportedCases", totalReportedCases);
 		model.addAttribute("totalNewReportedCases", totalNewReportedCases);
